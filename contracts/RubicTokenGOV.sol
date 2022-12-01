@@ -8,12 +8,22 @@ import {ERC20Capped} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20C
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
-contract RubicToken is ERC20Burnable, ERC20Capped, Ownable{
+contract RubicTokenGOV is ERC20Burnable, ERC20Capped, Ownable{
     using SafeERC20 for IERC20;
 
     event SweepTokens(address token, uint256 amount, address recipient);
 
-    constructor() ERC20("RUBIC GOVERNANCE TOKEN", "RBC-GOV") ERC20Capped(1_000_000_000 ether) {}
+    constructor(
+        address[] memory _minters,
+        uint256[] memory _amounts
+    ) ERC20("GOVERNANCE RBC", "gRBC") ERC20Capped(1_000_000_000 ether) {
+        require(_minters.length == _amounts.length, 'Diff length');
+
+        uint256 length = _minters.length;
+        for (uint i; i < length; i++) {
+            _mint(_minters[i], _amounts[i]);
+        }
+    }
 
     function sendToken(
         address _token,

@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
 const hre = require('hardhat');
-import { RubicToken } from '../typechain';
+import addresses from './addresses.json';
+import amounts from './amounts.json';
+import { RubicTokenGOV } from '../typechain';
 
 async function main() {
-    const args = [];
+    const args = [addresses, amounts];
 
-    const factory = await hre.ethers.getContractFactory('RubicToken');
-    const contract = (await factory.deploy(...args)) as RubicToken;
+    const factory = await hre.ethers.getContractFactory('RubicTokenGOV');
+    const contract = (await factory.deploy(...args)) as RubicTokenGOV;
 
     await contract.deployed();
 
